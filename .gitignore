@@ -47,3 +47,22 @@ public/assets/*.hot-update.js
 
 # Local runtime data: the repo contains sample JSON files in data/; do not ignore them by default
 # If you want to keep local-only copies out of git, create data/*.local or add specific patterns here.
+
+# -----------------------------
+# Deployment-critical files
+# -----------------------------
+# Ensure critical files and directories required to deploy the app are tracked.
+# These negations are safe (they only re-include paths if a higher-level pattern ignores them).
+!/.gitignore
+!/composer.json
+!/composer.lock
+!/public/
+!/public/assets/
+!/src/
+!/templates/
+!/assets/
+!/data/
+!/data/*.json
+
+# If you prefer to commit vendor/ instead of running `composer install` on the server,
+# remove the `/vendor/` line above. By default vendor/ remains ignored here.

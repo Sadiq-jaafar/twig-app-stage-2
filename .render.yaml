@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: twig-php-app
+    env: php
+    buildCommand: "composer install --no-dev"
+    startCommand: "php -S 0.0.0.0:$PORT -t public"
+    plan: free
