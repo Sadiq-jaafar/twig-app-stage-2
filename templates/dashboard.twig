@@ -1,0 +1,38 @@
+{% extends "base.twig" %}
+
+{% block title %}Dashboard - Ticket App{% endblock %}
+
+{% block content %}
+<section class="profile-card card" aria-labelledby="dashboard-title">
+    <h2 id="dashboard-title">Dashboard</h2>
+    <p>Overview of tickets</p>
+
+    <div class="stats" style="margin-top: 12px">
+        <div class="stat card">
+            <div>Total tickets</div>
+            <div style="font-size: 20px; font-weight: 700">{{ stats.total }}</div>
+        </div>
+
+        <div class="stat card">
+            <div>Open</div>
+            <div style="font-size: 20px; font-weight: 700">{{ stats.open }}</div>
+        </div>
+
+        <div class="stat card">
+            <div>In progress</div>
+            <div style="font-size: 20px; font-weight: 700">{{ stats.in_progress }}</div>
+        </div>
+
+        <div class="stat card">
+            <div>Resolved</div>
+            <div style="font-size: 20px; font-weight: 700">{{ stats.closed }}</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 16px">
+        <a href="/tickets">
+            <button type="button">Go to Tickets</button>
+        </a>
+    </div>
+</section>
+{% endblock %}

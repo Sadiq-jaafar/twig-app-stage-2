@@ -1,0 +1,49 @@
+# Git ignore for Twig/PHP ticket app
+
+# Composer vendor directory
+/vendor/
+
+# Composer setup
+/composer-setup.php
+
+# Environment files (local secrets)
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# PHPStorm metadata
+.phpstorm.meta.php
+
+# Node dependencies
+node_modules/
+
+# Logs, caches, and runtime files
+logs/
+cache/
+tmp/
+*.log
+*.cache
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# Build / distribution
+dist/
+build/
+
+# Generated / bundled assets (source maps etc.)
+public/assets/*.map
+public/assets/*.hot-update.js
+
+# Local runtime data: the repo contains sample JSON files in data/; do not ignore them by default
+# If you want to keep local-only copies out of git, create data/*.local or add specific patterns here.

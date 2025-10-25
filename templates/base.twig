@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Ticket App{% endblock %}</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    {% include 'partials/navbar.twig' %}
+    
+    <main>
+        {% if flash %}
+            <div class="toast {% if flash.type %}{{ flash.type }}{% endif %}" 
+                 role="status" 
+                 aria-live="{{ flash.type == 'error' ? 'assertive' : 'polite' }}">
+                {{ flash.message }}
+            </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+        <footer class="app-footer">
+            © {{ "now"|date("Y") }} TicketApp — Built for Frontend Stage 2
+        </footer>
+    </main>
+
+
+    <script src="/assets/nav.js" defer></script>
+</body>
+</html>

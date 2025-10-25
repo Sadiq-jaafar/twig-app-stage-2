@@ -1,0 +1,115 @@
+{% extends "base.twig" %}
+
+{% block title %}Tickets - Ticket App{% endblock %}
+
+{% block content %}
+<div class="tickets-page">
+    <section class="tickets-section" aria-labelledby="tickets-title">
+        <div class="section-header">
+            <h2 id="tickets-title">Your Tickets</h2>
+            <button type="button" onclick="showNewTicketForm()">New ticket</button>
+        </div>
+
+        <div class="tickets-list">
+            {% for ticket in tickets %}
+                <div class="ticket-row" data-ticket-id="{{ ticket.id }}" data-ticket="{{ ticket|json_encode|escape('html_attr') }}">
+                    <div class="ticket-info">
+                        <h3>{{ ticket.title }}</h3>
+                        <p>{{ ticket.description }}</p>
+                        <span class="ticket-status {{ ticket.status }}">{{ ticket.status|title }}</span>
+                    </div>
+                    <div class="ticket-actions">
+                        <button type="button" id="btnn" onclick="editTicket('{{ ticket.id }}')" class="secondary">Edit</button>
+                        <button type="button" onclick="deleteTicket('{{ ticket.id }}')" class="danger" id="btnn">Delete</button>
+                    </div>
+                </div>
+            {% else %}
+                <p class="no-tickets">No tickets yet. Create your first one!</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+{# New/Edit Ticket Modal #}
+<div id="ticketModal" class="modal" style="display: none">
+    <div class="modal-content card">
+        <h2 id="modal-title">New Ticket</h2>
+        <form id="ticketForm" method="POST" action="/tickets">
+            <input type="hidden" name="_method" value="POST">
+            <input type="hidden" name="ticketId" id="ticketId">
+            
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <option value="in_progress">In Progress</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            
+            
+            <div class="modal-actions">
+                <button type="submit">Save</button>
+                <button type="button" onclick="hideModal()" class="secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{# Delete Confirmation Modal #}
+<div id="deleteModal" class="modal" style="display: none">
+    <div class="modal-content card">
+        <h2>Delete Ticket</h2>
+        <p>Are you sure you want to delete this ticket? This cannot be undone.</p>
+        <form id="deleteForm" method="POST" action="/tickets">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="ticketId" id="deleteTicketId">
+            <div class="modal-actions">
+                <button type="submit" class="danger">Delete</button>
+                <button type="button" onclick="hideDeleteModal()" class="secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showNewTicketForm() {
+    document.getElementById('modal-title').textContent = 'New Ticket';
+    document.getElementById('ticketForm').reset();
+    document.getElementById('ticketId').value = '';
+    document.getElementById('ticketModal').style.display = 'flex';
+}
+
+function editTicket(id) {
+    const ticket = JSON.parse(document.querySelector(`[data-ticket-id="${id}"]`).dataset.ticket);
+    document.getElementById('modal-title').textContent = 'Edit Ticket';
+    document.getElementById('ticketId').value = id;
+    document.getElementById('title').value = ticket.title;
+    document.getElementById('description').value = ticket.description;
+    document.getElementById('status').value = ticket.status;
+    document.getElementById('ticketModal').style.display = 'flex';
+}
+
+function deleteTicket(id) {
+    document.getElementById('deleteTicketId').value = id;
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function hideModal() {
+    document.getElementById('ticketModal').style.display = 'none';
+}
+
+function hideDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+</script>
+{% endblock %}

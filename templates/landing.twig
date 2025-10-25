@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div>
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="circle one" aria-hidden="true"></div>
+        <div class="circle two" aria-hidden="true"></div>
+
+        <div class="hero-inner container">
+            <div>
+                <h1 id="hero-title">TicketApp — Manage work like magic</h1>
+                <p>A simple multi-frontend ticket manager stage 2 (Twig implementation). Create, update, and track tickets with a clean interface.</p>
+                <p style="margin-top: 12px">
+                    <a class="cta primary" href="/auth/login" aria-label="Login">Login</a>
+                    <span style="margin-left: 10px"></span>
+                    <a class="cta ghost" href="/auth/signup" aria-label="Get started">Get Started</a>
+                </p>
+            </div>
+
+            <div class="card" aria-hidden="true">
+                <strong>Quick features</strong>
+                <ul style="margin-top: 12px">
+                    <li>Auth (Session)</li>
+                    <li>Ticket CRUD</li>
+                    <li>Protected routes</li>
+                    <li>Accessible forms</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="wave" aria-hidden="true">
+            <img src="/hero-wave.svg" alt="" style="width: 100%" />
+        </div>
+    </section>
+
+    <section style="margin-top: 80px" class="profile-card card">
+        <h2>Why this demo</h2>
+        <p>This project demonstrates consistent visuals and behavior across frameworks. The Twig version uses PHP sessions for persistence.</p>
+    </section>
+</div>
+{% endblock %}

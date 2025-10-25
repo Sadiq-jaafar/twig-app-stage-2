@@ -1,0 +1,56 @@
+{% extends "base.twig" %}
+
+{% block title %}Create Account - Ticket App{% endblock %}
+
+{% block content %}
+<section class="profile-card card" aria-labelledby="signup-title">
+    <h2 id="signup-title">Create Account</h2>
+    
+    <form method="POST" action="/auth/signup" novalidate>
+        <div class="form-group">
+            <label for="name">Full name</label>
+            <input id="name" 
+                   type="text" 
+                   name="name"
+                   value="{{ old.name|default('') }}"
+                   {% if errors.name %}aria-describedby="err-name"{% endif %}
+            />
+            {% if errors.name %}
+                <small id="err-name" role="alert" style="color: red">{{ errors.name }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" 
+                   type="email" 
+                   name="email"
+                   value="{{ old.email|default('') }}"
+                   {% if errors.email %}aria-describedby="err-email"{% endif %}
+            />
+            {% if errors.email %}
+                <small id="err-email" role="alert" style="color: red">{{ errors.email }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" 
+                   type="password" 
+                   name="password"
+                   {% if errors.password %}aria-describedby="err-password"{% endif %}
+            />
+            {% if errors.password %}
+                <small id="err-password" role="alert" style="color: red">{{ errors.password }}</small>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 8px">
+            <button type="submit">Create account</button>
+            <a href="/auth/login">
+                <button type="button" class="secondary">Back to login</button>
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}
