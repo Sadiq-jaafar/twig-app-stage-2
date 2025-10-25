@@ -1,0 +1,10 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Set the base path (optional — adjust if your app is in a subfolder)
+RewriteBase /
+
+# Redirect all requests to index.php if the file or folder doesn’t exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
