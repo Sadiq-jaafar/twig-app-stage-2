@@ -5,5 +5,19 @@
         "email": "jokahhsolarsolution@gmail.com",
         "password": "$2y$12$vLW8mdiXsHraw58vmql\/sub3VdPtACzU0ahkoFgvKK3ZcpH56WcmW",
         "createdAt": 1761395098
+    },
+    {
+        "id": "u_f6e4dd89406b530d",
+        "name": "test2",
+        "email": "test2@test.com",
+        "password": "$2y$12$VWumSWs3ym9MV3Ndn3WFX.00XMo7TF6zjgnKZVt.9VtXIZ7IO3Xgu",
+        "createdAt": 1761920225
+    },
+    {
+        "id": "u_ad32a8d7b006c1bc",
+        "name": "jj",
+        "email": "jj@gmail.com",
+        "password": "$2y$12$BhRDTmX6qvxD7JyZ7JZbSOtR8TZVK2n6sUmkJdHjLgHRjh\/kUG6TS",
+        "createdAt": 1761920276
     }
 ]

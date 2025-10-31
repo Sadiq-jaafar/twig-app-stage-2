@@ -6,9 +6,10 @@ class Storage {
 
     public function __construct() {
         $this->dataDir = __DIR__ . '/../data';
-        if (!file_exists($this->dataDir)) {
-            mkdir($this->dataDir, 0777, true);
+        if (!is_dir($this->dataDir)) {
+            @mkdir($this->dataDir, 0775, true);
         }
+        @chmod($this->dataDir, 0775);
     }
 
     private function getTicketsFile(string $userId): string {
@@ -18,7 +19,15 @@ class Storage {
     private function ensureTicketsFile(string $userId): void {
         $file = $this->getTicketsFile($userId);
         if (!file_exists($file)) {
-            file_put_contents($file, '[]');
+            $res = @file_put_contents($file, '[]');
+            if ($res === false) {
+                @chmod($this->dataDir, 0775);
+                $res = @file_put_contents($file, '[]');
+                if ($res === false) {
+                    throw new \RuntimeException("Unable to create tickets file '{$file}'. Ensure 'data/' is writable by the web process.");
+                }
+            }
+            @chmod($file, 0664);
         }
     }
 
