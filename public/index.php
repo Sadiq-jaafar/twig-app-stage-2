@@ -21,23 +21,22 @@ $twig->addFunction(new \Twig\TwigFunction('isAuthenticated', function() {
 }));
 $twig->addGlobal('user', $_SESSION['user'] ?? null);
 
-try {
-    // Initialize dependencies
-    $auth = new Auth();
-    $storage = new Storage();
-    $controller = new Controller($twig, $auth, $storage);
+// Initialize dependencies
+$auth = new Auth();
+$storage = new Storage();
+$controller = new Controller($twig, $auth, $storage);
 
-    // Simple router
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $method = $_SERVER['REQUEST_METHOD'];
+// Simple router
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
-    // Flash messages
-    $flash = $_SESSION['flash'] ?? null;
-    unset($_SESSION['flash']);
-    $twig->addGlobal('flash', $flash);
+// Flash messages
+$flash = $_SESSION['flash'] ?? null;
+unset($_SESSION['flash']);
+$twig->addGlobal('flash', $flash);
 
-    // Routes
-    switch ($path) {
+// Routes
+switch ($path) {
     case '/':
         $controller->landing();
         break;
@@ -80,14 +79,4 @@ try {
         http_response_code(404);
         echo $twig->render('404.twig');
         break;
-}
-} catch (\RuntimeException $e) {
-    // Log the error and show a simple 500 page without sending additional headers later
-    error_log($e->getMessage());
-    http_response_code(500);
-    echo $twig->render('500.twig', ['error' => $e->getMessage()]);
-} catch (\Throwable $t) {
-    error_log($t->getMessage());
-    http_response_code(500);
-    echo $twig->render('500.twig', ['error' => 'An internal error occurred.']);
 }

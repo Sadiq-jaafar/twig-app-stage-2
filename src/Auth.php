@@ -6,25 +6,9 @@ class Auth {
     private const SESSION_DURATION = 21600; // 6 hours in seconds
 
     public function __construct() {
-        $dataDir = __DIR__ . '/../data';
-        if (!is_dir($dataDir)) {
-            @mkdir($dataDir, 0775, true);
-        }
-
-        $this->usersFile = $dataDir . '/users.json';
-
+        $this->usersFile = __DIR__ . '/../data/users.json';
         if (!file_exists($this->usersFile)) {
-            // suppress warnings, check result and surface a clear exception instead
-            $res = @file_put_contents($this->usersFile, '[]');
-            if ($res === false) {
-                // try to repair perms and retry once
-                @chmod($dataDir, 0775);
-                $res = @file_put_contents($this->usersFile, '[]');
-                if ($res === false) {
-                    throw new \RuntimeException("Unable to create data file '{$this->usersFile}'. Ensure 'data/' is writable by the web process.");
-                }
-            }
-            @chmod($this->usersFile, 0664);
+            file_put_contents($this->usersFile, '[]');
         }
     }
 

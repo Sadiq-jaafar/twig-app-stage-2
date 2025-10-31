@@ -19,5 +19,12 @@
         "email": "jj@gmail.com",
         "password": "$2y$12$BhRDTmX6qvxD7JyZ7JZbSOtR8TZVK2n6sUmkJdHjLgHRjh\/kUG6TS",
         "createdAt": 1761920276
+    },
+    {
+        "id": "u_3e851a55f7adfb28",
+        "name": "sadiq",
+        "email": "gg@gmail.com",
+        "password": "$2y$12$YizPhqS4INAQQHRbzBP6b.RwGJMX5n1Pm2NUB\/m1LniN45LKcIKi2",
+        "createdAt": 1761921756
     }
 ]
