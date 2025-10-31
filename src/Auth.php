@@ -7,13 +7,32 @@ class Auth {
 
     public function __construct() {
         $this->usersFile = __DIR__ . '/../data/users.json';
+
+        // Ensure data directory exists and is writable
+        $dataDir = dirname($this->usersFile);
+        if (!file_exists($dataDir)) {
+            mkdir($dataDir, 0777, true);
+        }
+
+        // Ensure users file exists
         if (!file_exists($this->usersFile)) {
             file_put_contents($this->usersFile, '[]');
+        }
+
+        // Make sure file is writable
+        if (!is_writable($this->usersFile)) {
+            chmod($this->usersFile, 0666);
+        }
+
+        // Start session if not already started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
     }
 
     private function getUsers(): array {
-        return json_decode(file_get_contents($this->usersFile), true) ?? [];
+        $content = @file_get_contents($this->usersFile);
+        return $content ? (json_decode($content, true) ?? []) : [];
     }
 
     private function saveUsers(array $users): void {
@@ -22,20 +41,20 @@ class Auth {
 
     public function createUser(array $userData): array {
         $users = $this->getUsers();
-        
+
         // Validate email
         if (empty($userData['email']) || !filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
             throw new \Exception('Valid email required');
         }
-        
+
         // Check if email exists
         if (array_filter($users, fn($u) => $u['email'] === $userData['email'])) {
             throw new \Exception('Email already registered');
         }
-        
+
         // Validate password
         if (empty($userData['password']) || strlen($userData['password']) < 6) {
-            throw new \Exception('Password must be >= 6 chars');
+            throw new \Exception('Password must be at least 6 characters long');
         }
 
         $user = [
@@ -49,7 +68,6 @@ class Auth {
         $users[] = $user;
         $this->saveUsers($users);
 
-        // Don't return password hash
         unset($user['password']);
         return $user;
     }
@@ -57,13 +75,13 @@ class Auth {
     public function login(array $credentials): array {
         $users = $this->getUsers();
         $user = array_filter($users, fn($u) => $u['email'] === $credentials['email']);
-        
+
         if (!$user) {
             throw new \Exception('Invalid credentials');
         }
-        
+
         $user = reset($user);
-        
+
         if (!password_verify($credentials['password'], $user['password'])) {
             throw new \Exception('Invalid credentials');
         }
@@ -77,11 +95,28 @@ class Auth {
     }
 
     public function logout(): void {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
         session_destroy();
     }
 
     public function isAuthenticated(): bool {
-        return isset($_SESSION['user']) && $_SESSION['expires'] > time();
+        if (!isset($_SESSION['user'])) {
+            return false;
+        }
+
+        if (!isset($_SESSION['expires']) || $_SESSION['expires'] <= time()) {
+            unset($_SESSION['user'], $_SESSION['expires']);
+            return false;
+        }
+
+        return true;
     }
 
     public function requireAuth(): void {
@@ -98,5 +133,14 @@ class Auth {
 
     public function setFlash(string $message, string $type = 'info'): void {
         $_SESSION['flash'] = ['message' => $message, 'type' => $type];
+    }
+
+    public function getFlash(): ?array {
+        if (isset($_SESSION['flash'])) {
+            $flash = $_SESSION['flash'];
+            unset($_SESSION['flash']);
+            return $flash;
+        }
+        return null;
     }
 }
