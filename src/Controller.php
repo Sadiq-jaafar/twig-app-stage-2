@@ -102,13 +102,21 @@ class Controller {
         }
 
         try {
-            $user = $this->auth->createUser([
+            // Create user and immediately log them in so session expiry is set
+            $this->auth->createUser([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password
             ]);
-            $_SESSION['user'] = $user;
-            $this->auth->setFlash('Account created — logged in', 'success');
+
+            // Use login to verify credentials and set session expiry consistently
+            $this->auth->login([
+                'email' => $email,
+                'password' => $password
+            ]);
+
+            // Show a toast saying registration succeeded and redirect to dashboard
+            $this->auth->setFlash('Registration successful', 'success');
             header('Location: /dashboard');
         } catch (\Exception $e) {
             $_SESSION['errors'] = ['form' => $e->getMessage()];

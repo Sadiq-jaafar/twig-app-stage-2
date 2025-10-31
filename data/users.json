@@ -26,5 +26,12 @@
         "email": "gg@gmail.com",
         "password": "$2y$12$YizPhqS4INAQQHRbzBP6b.RwGJMX5n1Pm2NUB\/m1LniN45LKcIKi2",
         "createdAt": 1761921756
+    },
+    {
+        "id": "u_347f9c56bd19b79a",
+        "name": "sadiq",
+        "email": "ggg@gimal.com",
+        "password": "$2y$12$OOK6fe4cpd5Ul2SFdPLiTeFJsEtWdN8XHr5QRZxuQ5pH4DZsFOgq.",
+        "createdAt": 1761924163
     }
 ]
